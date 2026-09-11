@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Explore Ras Al Khaimah | Official Destination Guide</title>
+
+<meta name="description"
+content="Discover Ras Al Khaimah – mountains, beaches, heritage, culture, adventure, food and unforgettable Arabian experiences.">
+
+<!-- Leaflet Map -->
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<style>
+
+:root{
+    --sand:#e9c46a;
+    --gold:#d99b32;
+    --dark:#102a32;
+    --blue:#087f8c;
+    --light:#f7f4ed;
+    --white:#ffffff;
+    --text:#263238;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:var(--light);
+    color:var(--text);
+    line-height:1.6;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.container{
+    width:90%;
+    max-width:1250px;
+    margin:auto;
+}
+
+/* ================= CREDIT BAR ================= */
+
+.credit-bar {
+    background: #091c21;
+    color: var(--sand);
+    text-align: center;
+    padding: 8px 15px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+
+/* ================= NAVIGATION ================= */
+
+nav{
+    position:fixed;
+    top:33px;
+    left:0;
+    width:100%;
+    z-index:9999;
+    background:rgba(16,42,50,.96);
+    color:white;
+    padding:15px 0;
+    backdrop-filter:blur(10px);
+}
+
+.nav-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:var(--sand);
+}
+
+.nav-links{
+    display:flex;
+    gap:25px;
+    list-style:none;
+}
+
+.nav-links a{
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:var(--sand);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    text-align:center;
+    color:white;
+
+    background:
+    linear-gradient(rgba(0,30,35,.55),rgba(0,20,25,.65)),
+    url("images/IMG_9990.JPG");
+
+    background-size:cover;
+    background-position:center;
+}
+
+.hero-content{
+    max-width:850px;
+    margin:auto;
+    padding-top:110px;
+}
+
+.hero h1{
+    font-size:clamp(45px,7vw,85px);
+    line-height:1.05;
+    margin-bottom:20px;
+}
+
+.hero h1 span{
+    color:var(--sand);
+}
+
+.hero p{
+    font-size:21px;
+    margin-bottom:30px;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:14px 25px;
+    border-radius:30px;
+    background:var(--gold);
+    color:white;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+    background:#bd8122;
+}
+
+.btn-outline{
+    background:transparent;
+    border:2px solid white;
+}
+
+/* ================= GALLERY SLIDER ================= */
+
+.gallery-section {
+    padding: 50px 0;
+    background: #f0eadc;
+    overflow: hidden;
+}
+
+.gallery-title {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.gallery-title h2 {
+    font-size: 36px;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+
+.gallery-title p {
+    font-size: 16px;
+    color: #555;
+}
+
+.slider-container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px 0 20px 0;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.slider-track {
+    display: flex;
+    gap: 15px;
+    width: max-content;
+    padding: 0 20px;
+}
+
+.slider-track img {
+    height: 260px;
+    width: 340px;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.slider-track img:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+
+/* ================= SECTION ================= */
+
+section{
+    padding:90px 0;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.section-title h2{
+    font-size:42px;
+    color:var(--dark);
+    margin-bottom:10px;
+}
+
+.section-title p{
+    max-width:750px;
+    margin:auto;
+}
+
+/* ================= INTRO ================= */
+
+.intro{
+    background:white;
+}
+
+.intro-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    align-items:center;
+}
+
+.intro-image{
+    height:430px;
+    border-radius:20px;
+    background:
+    url("images/IMG_0023.JPG")
+    center/cover;
+}
+
+.intro-text h3{
+    font-size:34px;
+    color:var(--dark);
+    margin-bottom:20px;
+}
+
+.highlight{
+    color:var(--blue);
+    font-weight:bold;
+}
+
+/* ================= DESTINATION MARKETING / BEST DESTINATION ================= */
+
+.marketing-section {
+    background: #e8f1ef;
+}
+
+.marketing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.marketing-card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 5px 18px rgba(0,0,0,.06);
+}
+
+.marketing-card h3 {
+    color: var(--blue);
+    margin-bottom: 12px;
+}
+
+/* ================= WHY RAK ================= */
+
+.reasons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.reason{
+    background:white;
+    padding:30px;
+    text-align:center;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.reason:hover{
+    transform:translateY(-7px);
+}
+
+.reason .icon{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+/* ================= VIDEO ================= */
+
+.video-section{
+    background:var(--dark);
+    color:white;
+}
+
+.video-section .section-title h2{
+    color:white;
+}
+
+.video-wrapper{
+    position:relative;
+    width:100%;
+    max-width:900px;
+    margin:auto;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 50px rgba(0,0,0,.4);
+}
+
+.local-video{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:20px;
+}
+
+/* ================= MAP ================= */
+
+.map-section{
+    background:white;
+}
+
+#map{
+    height:600px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.map-info{
+    margin-top:20px;
+    background:#f0eadc;
+    padding:20px;
+    border-radius:12px;
+}
+
+/* ================= FILTER ================= */
+
+.filters{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:35px;
+}
+
+.filter-btn{
+    border:none;
+    background:white;
+    padding:11px 18px;
+    border-radius:25px;
+    cursor:pointer;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
+
+.filter-btn.active,
+.filter-btn:hover{
+    background:var(--blue);
+    color:white;
+}
+
+/* ================= ATTRACTIONS ================= */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+}
+
+.card{
+    background:white;
+    border-radius:17px;
+    overflow:hidden;
+    box-shadow:0 5px 18px rgba(0,0,0,.1);
+    transition:.3s;
+    position:relative;
+}
+
+.card:hover{
+    transform:translateY(-7px);
+}
+
+.card-image{
+    height:220px;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.card-content{
+    padding:20px;
+}
+
+.card-content h3{
+    color:var(--dark);
+    margin-bottom:8px;
+}
+
+.card-content p{
+    font-size:14px;
+    margin-bottom:15px;
+}
+
+.card-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.small-btn{
+    background:var(--blue);
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.favorite{
+    position:absolute;
+    right:12px;
+    top:12px;
+    background:white;
+    border:none;
+    border-radius:50%;
+    width:40px;
+    height:40px;
+    cursor:pointer;
+    font-size:20px;
+}
+
+/* ================= EXPERIENCE & FOOD ================= */
+
+.experience-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.experience{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+}
+
+.experience h3{
+    color:var(--blue);
+    margin-bottom:10px;
+}
+
+.food-section{
+    background:#f0eadc;
+}
+
+/* ================= TRANSPORT ================= */
+
+.transport{
+    background:#e8f1ef;
+}
+
+.transport-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.transport-card{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    text-align:center;
+}
+
+.transport-card .icon{
+    font-size:40px;
+}
+
+/* ================= ACCOMMODATION ================= */
+
+.accommodation{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.hotel{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+}
+
+.hotel h3{
+    color:var(--dark);
+    margin-bottom:10px;
+}
+
+.hotel ul{
+    margin-top:10px;
+    padding-left:18px;
+    font-size:14px;
+    color:#444;
+}
+
+.hotel li{
+    margin-bottom:6px;
+}
+
+/* ================= ITINERARY ================= */
+
+.itinerary{
+    background:var(--dark);
+    color:white;
+}
+
+.itinerary .section-title h2{
+    color:white;
+}
+
+.timeline{
+    max-width:850px;
+    margin:auto;
+}
+
+.day{
+    border-left:3px solid var(--sand);
+    padding:0 0 30px 30px;
+    margin-bottom:15px;
+}
+
+.day h3{
+    color:var(--sand);
+}
+
+/* ================= BUDGET ================= */
+
+.budget{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.budget-card{
+    background:white;
+    border-radius:18px;
+    padding:35px;
+    text-align:center;
+}
+
+.price{
+    font-size:36px;
+    color:var(--blue);
+    font-weight:bold;
+}
+
+/* ================= CTA ================= */
+
+.cta{
+    background:
+    linear-gradient(rgba(8,127,140,.88),rgba(8,127,140,.88)),
+    url("images/IMG_9991.JPG")
+    center/cover;
+
+    color:white;
+    text-align:center;
+}
+
+.cta h2{
+    font-size:45px;
+    margin-bottom:15px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    background:#091c21;
+    color:white;
+    padding:50px 0 25px;
+}
+
+.footer-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:30px;
+}
+
+footer h3{
+    color:var(--sand);
+    margin-bottom:15px;
+}
+
+footer a{
+    display:block;
+    margin-bottom:8px;
+    color:#ddd;
+}
+
+.copyright{
+    text-align:center;
+    border-top:1px solid #345;
+    padding-top:20px;
+    margin-top:30px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1000px){
+
+    .cards,
+    .marketing-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .reasons,
+    .transport-grid,
+    .accommodation{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .intro-grid{
+        grid-template-columns:1fr;
+    }
+
+    .experience-grid{
+        grid-template-columns:1fr;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:650px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .cards,
+    .reasons,
+    .transport-grid,
+    .accommodation,
+    .marketing-grid,
+    .budget{
+        grid-template-columns:1fr;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr;
+    }
+
+    #map{
+        height:450px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= CREDIT BAR ================= -->
+
+<div class="credit-bar">
+Designed by Shreeram Nyaupane & Runyararo Cynthia Chikande (Royal Roads University, RAK)
+</div>
+
+
+<!-- ================= NAVIGATION ================= -->
+
+<nav>
+<div class="container nav-inner">
+
+<div class="logo">
+RAK<span>Explore</span>
+</div>
+
+<ul class="nav-links">
+<li><a href="#home">Home</a></li>
+<li><a href="#gallery">Gallery</a></li>
+<li><a href="#marketing">Best Destination</a></li>
+<li><a href="#map-section">Map</a></li>
+<li><a href="#places">Explore</a></li>
+<li><a href="#culture">Culture</a></li>
+<li><a href="#local-food">Local Foods</a></li>
+<li><a href="#adventure">Adventure</a></li>
+<li><a href="#stay">Stay</a></li>
+<li><a href="#transport">Getting Around</a></li>
+</ul>
+
+</div>
+</nav>
+
+
+<!-- ================= HERO ================= -->
+
+<header class="hero" id="home">
+
+<div class="hero-content">
+
+<p>WELCOME TO THE NORTHERN EMIRATE</p>
+
+<h1>
+Discover <span>Ras Al Khaimah</span>
+</h1>
+
+<p>
+Mountains. Beaches. Desert. Heritage.
+Adventure. Authentic Emirati culture.
+One unforgettable destination.
+</p>
+
+<div class="buttons">
+
+<a href="#map-section" class="btn">
+Explore the Map
+</a>
+
+<a href="#places" class="btn btn-outline">
+Discover RAK
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+
+<!-- ================= PHOTO GALLERY SLIDER ================= -->
+
+<section class="gallery-section" id="gallery">
+
+<div class="gallery-title">
+<h2>Destination Gallery</h2>
+<p>Swipe or scroll horizontally to explore all destination highlights</p>
+</div>
+
+<div class="slider-container">
+<div class="slider-track">
+<img src="images/IMG_0023.JPG" alt="Gallery Photo 1">
+<img src="images/IMG_0030.JPG" alt="Gallery Photo 2">
+<img src="images/IMG_0041.JPG" alt="Gallery Photo 3">
+<img src="images/IMG_1937.JPG" alt="Gallery Photo 4">
+<img src="images/IMG_1949.JPG" alt="Gallery Photo 5">
+<img src="images/IMG_1962.JPG" alt="Gallery Photo 6">
+<img src="images/IMG_7421.JPG" alt="Gallery Photo 7">
+<img src="images/IMG_7436.JPG" alt="Gallery Photo 8">
+<img src="images/IMG_7439.JPG" alt="Gallery Photo 9">
+<img src="images/IMG_7448.JPG" alt="Gallery Photo 10">
+<img src="images/IMG_7522.JPG" alt="Gallery Photo 11">
+<img src="images/IMG_7581.JPG" alt="Gallery Photo 12">
+<img src="images/IMG_7607.JPG" alt="Gallery Photo 13">
+<img src="images/IMG_7617.JPG" alt="Gallery Photo 14">
+<img src="images/IMG_7631.JPG" alt="Gallery Photo 15">
+<img src="images/IMG_7632.JPG" alt="Gallery Photo 16">
+<img src="images/IMG_9917.JPG" alt="Gallery Photo 17">
+<img src="images/IMG_9927.JPG" alt="Gallery Photo 18">
+<img src="images/IMG_9948.JPG" alt="Gallery Photo 19">
+<img src="images/IMG_9962.JPG" alt="Gallery Photo 20">
+<img src="images/IMG_9975.JPG" alt="Gallery Photo 21">
+<img src="images/IMG_9982.JPG" alt="Gallery Photo 22">
+<img src="images/IMG_9987.JPG" alt="Gallery Photo 23">
+<img src="images/IMG_9990.JPG" alt="Gallery Photo 24">
+<img src="images/IMG_9991.JPG" alt="Gallery Photo 25">
+</div>
+</div>
+
+</section>
+
+
+<!-- ================= INTRO ================= -->
+
+<section class="intro">
+
+<div class="container intro-grid">
+
+<div class="intro-image"></div>
+
+<div class="intro-text">
+
+<h3>Where Nature Meets Authentic Arabia</h3>
+
+<p>
+Ras Al Khaimah (RAK) is the northernmost emirate of the UAE, offering a distinct alternative to neighboring metropolis cities. Known for its unmatched landscape diversity, RAK seamlessly integrates terracotta deserts, sweeping Gulf coastlines, lush coastal mangroves, and the majestic Hajar Mountains within a compact geographic footprint.
+</p>
+
+<br>
+
+<p>
+<strong>Why RAK Attracts Global Tourists:</strong>
+Unlike traditional city escapes, Ras Al Khaimah appeals to modern travelers looking for authenticity, luxury, and outdoor freedom. Home to the UAE's highest peak (Jebel Jais), world-record adventure attractions, 7,000+ years of continuous archaeological heritage, and peaceful luxury beach resorts, it offers something for every travel style.
+</p>
+
+<br>
+
+<p>
+With over <span class="highlight">7,000 years of living history</span>, visitors can transition from mountain hiking to authentic pearl diving history, traditional Arabic dining, and tranquil beachfront relaxation in a single day.
+</p>
+
+<br>
+
+<a href="#places" class="btn">
+Start Exploring
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= BEST DESTINATION TO VISIT ================= -->
+
+<section class="marketing-section" id="marketing">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Best Destination to Visit</h2>
+
+<p>
+How Ras Al Khaimah positions itself as the eco-adventure, culture, and luxury capital of the Northern Emirates.
+</p>
+
+</div>
+
+<div class="marketing-grid">
+
+<div class="marketing-card">
+
+<h3>🏔️ "Nature & Adventure" Positioning</h3>
+
+<p>
+RAK Tourism Development Authority (RAKTDA) has successfully established the emirate as the primary adventure hub of the Middle East. By leveraging natural assets like Jebel Jais, marketing strategies showcase eco-tourism, mountain sports, and record-breaking attractions like Jais Flight.
+</p>
+
+</div>
+
+<div class="marketing-card">
+
+<h3>🌴 Balanced Tourism Portfolios</h3>
+
+<p>
+Destination branding strategy focuses on diversification across three distinct pillars: **Nature & Mountain Adventure**, **Cultural & Heritage Preservation** (such as Dhayah Fort and Al Jazirah Al Hamra), and **Sustainable Coastal Luxury** on Al Marjan Island.
+</p>
+
+</div>
+
+<div class="marketing-card">
+
+<h3>♻️ Sustainable Tourism Mandate</h3>
+
+<p>
+Marketing RAK centers heavily on sustainable tourism practices. By prioritizing environmental conservation, protecting mangrove ecosystems, and promoting eco-friendly hospitality options, RAK attracts conscious global travelers seeking sustainable destinations.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= WHY RAK ================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Why Visit Ras Al Khaimah?</h2>
+
+<p>
+A destination designed for explorers, families, couples,
+culture lovers and adventure seekers.
+</p>
+
+</div>
+
+<div class="reasons">
+
+<div class="reason">
+<div class="icon">🏔️</div>
+<h3>Mountains</h3>
+<p>Experience Jebel Jais, hiking, mountain views and adrenaline activities.</p>
+</div>
+
+<div class="reason">
+<div class="icon">🏖️</div>
+<h3>Beaches</h3>
+<p>Relax along beautiful beaches and the waterfront of Al Marjan Island.</p>
+</div>
+
+<div class="reason">
+<div class="icon">🏛️</div>
+<h3>Heritage</h3>
+<p>Discover forts, museums, souqs, traditional villages and pearl-diving history.</p>
+</div>
+
+<div class="reason">
+<div class="icon">🎢</div>
+<h3>Adventure</h3>
+<p>Ziplining, hiking, kayaking, desert safaris and mountain experiences.</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= PROMOTIONAL VIDEO ================= -->
+
+<section class="video-section">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Experience Ras Al Khaimah</h2>
+
+<p>
+Watch the destination come alive.
+</p>
+
+</div>
+
+<div class="video-wrapper">
+
+<video class="local-video" controls preload="none">
+    <source src="Video/Visit_RAK.mp4" type="video/mp4">
+    <source src="Video/Visit_RAK.mov" type="video/quicktime">
+    Your browser does not support playing this video file.
+</video>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= INTERACTIVE MAP ================= -->
+
+<section class="map-section" id="map-section">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Explore RAK on the Map</h2>
+
+<p>
+Click an attraction to discover where your next adventure begins.
+</p>
+
+</div>
+
+<div id="map"></div>
+
+<div class="map-info">
+
+<strong>Interactive Destination Map</strong>
+
+<p>
+Use the map to explore heritage sites, beaches, mountains,
+restaurants, shopping areas and major tourism districts.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= PLACES ================= -->
+
+<section id="places">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>12 Places to Discover</h2>
+
+<p>
+From ancient villages to futuristic resorts, explore the many
+faces of Ras Al Khaimah.
+</p>
+
+</div>
+
+<div class="filters">
+
+<button class="filter-btn active" onclick="filterCards('all')">
+All
+</button>
+
+<button class="filter-btn" onclick="filterCards('culture')">
+Culture
+</button>
+
+<button class="filter-btn" onclick="filterCards('nature')">
+Nature
+</button>
+
+<button class="filter-btn" onclick="filterCards('beach')">
+Beaches
+</button>
+
+<button class="filter-btn" onclick="filterCards('food')">
+Food
+</button>
+
+<button class="filter-btn" onclick="filterCards('shopping')">
+Shopping
+</button>
+
+<button class="filter-btn" onclick="filterCards('adventure')">
+Adventure
+</button>
+
+</div>
+
+
+<div class="cards" id="attractionCards">
+
+
+<!-- 1 -->
+
+<div class="card" data-category="culture">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_1937.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Al Jazirah Al Hamra</h3>
+
+<p>
+A historic abandoned pearl-fishing village preserving traditional
+Emirati architecture and stories.
+</p>
+
+<div class="card-buttons">
+
+<button class="small-btn"
+onclick="showPlace('Al Jazirah Al Hamra',25.699,55.790)">
+📍 Map
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 2 -->
+
+<div class="card" data-category="culture">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_7448.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>National Museum</h3>
+
+<p>
+Explore archaeological discoveries, traditional life, weapons,
+pearling and the history of Ras Al Khaimah.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('National Museum of Ras Al Khaimah',25.791,55.943)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+<!-- 3 -->
+
+<div class="card" data-category="beach">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_7607.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Al Marjan Island</h3>
+
+<p>
+A spectacular waterfront destination featuring resorts,
+beaches, promenades and entertainment.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('Al Marjan Island',25.670,55.740)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+<!-- 4 -->
+
+<div class="card" data-category="shopping">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_7439.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Kuwaiti Souq</h3>
+
+<p>
+Discover local shopping, traditional products and the atmosphere
+of RAK's historic commercial areas.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('Kuwaiti Souq',25.797,55.950)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+<!-- 5 -->
+
+<div class="card" data-category="beach">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_1962.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Flamingo Beach</h3>
+
+<p>
+A relaxed waterfront experience ideal for families, photography
+and sunset walks.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('Flamingo Beach',25.766,55.905)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+<!-- 6 -->
+
+<div class="card" data-category="adventure">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_1949.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Jebel Jais</h3>
+
+<p>
+The UAE's highest mountain destination with spectacular roads,
+hiking, viewpoints and adventure activities.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('Jebel Jais',25.952,56.183)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+<!-- 7 -->
+
+<div class="card" data-category="nature">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_7617.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Khor RAK Mangroves</h3>
+
+<p>
+Explore RAK's coastal ecosystem and discover the natural beauty
+of mangroves and waterways.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('Khor RAK Mangroves',25.815,55.949)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+<!-- 8 -->
+
+<div class="card" data-category="food">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_9987.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Eysheat Awal Restaurant</h3>
+
+<p>
+Experience traditional Emirati and regional flavours in the
+historic heart of RAK.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('Eysheat Awal Restaurant',25.790,55.943)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+<!-- 9 -->
+
+<div class="card" data-category="shopping">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_7581.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Manar Mall</h3>
+
+<p>
+Shopping, dining, entertainment and family activities in central
+Ras Al Khaimah.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('Manar Mall',25.794,55.949)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+<!-- 10 -->
+
+<div class="card" data-category="beach">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_0041.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Al Qawasim Corniche</h3>
+
+<p>
+A waterfront promenade for walking, dining, family activities
+and relaxing beside RAK Creek.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('Al Qawasim Corniche',25.792,55.945)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+<!-- 11 -->
+
+<div class="card" data-category="beach">
+
+<button class="favorite">♡</button>
+
+<div class="card-image"
+style="background-image:url('images/IMG_7421.JPG')">
+</div>
+
+<div class="card-content">
+
+<h3>Wynn Al Marjan Island</h3>
+
+<p>
+A major new integrated resort destination on Al Marjan Island.
+</p>
+
+<button class="small-btn"
+onclick="showPlace('Wynn Al Marjan Island',25.700,55.730)">
+📍 Map
+</button>
+
+</div>
+</div>
+
+
+</div>
+</div>
+</section>
+
+
+<!-- ================= CULTURE ================= -->
+
+<section id="culture">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Culture & Heritage</h2>
+
+<p>
+Discover the traditions that have shaped Ras Al Khaimah for
+thousands of years.
+</p>
+
+</div>
+
+<div class="experience-grid">
+
+<div class="experience">
+
+<h3>🏛️ Heritage Villages</h3>
+
+<p>
+Visit Al Jazirah Al Hamra and discover traditional homes,
+mosques, watchtowers and the history of pearl fishing.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🦪 Pearl Diving</h3>
+
+<p>
+Pearling played an important role in the emirate's maritime
+history. Visit Suwaidi Pearls to learn about traditional pearl
+fishing.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>☕ Emirati Hospitality</h3>
+
+<p>
+Experience Arabic coffee, dates, tea, traditional foods and
+the welcoming culture of the UAE.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🕌 Historic Architecture</h3>
+
+<p>
+Explore forts, mosques, old settlements and traditional
+architecture across the emirate.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🛍️ Souqs</h3>
+
+<p>
+Traditional markets provide opportunities to experience local
+shopping and discover regional products.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🎨 Local Stories</h3>
+
+<p>
+Museums and heritage sites connect visitors with the people,
+trades and traditions that shaped RAK.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= LOCAL FOODS ================= -->
+
+<section class="food-section" id="local-food">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Authentic Local Foods in RAK</h2>
+
+<p>
+Taste the rich culinary heritage of Ras Al Khaimah and traditional Emirati cuisine.
+</p>
+
+</div>
+
+<div class="experience-grid">
+
+<div class="experience">
+
+<h3>🍲 Machboos (Al Machboos)</h3>
+
+<p>
+A classic Emirati spiced rice dish cooked with slow-cooked chicken, lamb, or fresh local fish from the Arabian Gulf, infused with dried limes (loomi) and cardamom.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🍞 Chbāb & Luqaimat</h3>
+
+<p>
+Traditional sweet delights! **Chbāb** are golden Emirati pancakes spiced with saffron and cardamom, while **Luqaimat** are crispy, deep-fried dough balls drizzled with sweet date syrup (dibs).
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🥘 Al Harees</h3>
+
+<p>
+A traditional dish served during special celebrations, made by slow-cooking beaten wheat and meat until completely smooth, finished with melted local ghee.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🐟 Jasheed & Fresh Seafood</h3>
+
+<p>
+Reflecting RAK's coastal history, **Jasheed** is shredded baby shark cooked with aromatic spices, onion, and herbs, traditionally served over white rice.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🥩 Al Mrooq (Salona)</h3>
+
+<p>
+A hearty Emirati stew packed with seasonal vegetables, aromatic spices, and tender meat or fish, usually enjoyed with fresh local flatbread.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>☕ Gahwa & Local Dates</h3>
+
+<p>
+Authentic Arabic coffee infused with cardamom and saffron, traditionally served in small cups (finjan) alongside premium local dates as a symbol of hospitality.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= ADVENTURE ================= -->
+
+<section id="adventure">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Adventure in Every Direction</h2>
+
+<p>
+From sea level to the summit of Jebel Jais.
+</p>
+
+</div>
+
+<div class="experience-grid">
+
+<div class="experience">
+
+<h3>🚀 Jais Flight</h3>
+
+<p>
+Fly across the Hajar Mountains on one of the world's most
+exciting zipline experiences.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🥾 Mountain Hiking</h3>
+
+<p>
+Explore hiking trails and dramatic mountain landscapes around
+Jebel Jais and Wadi areas.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🏜️ Desert Safari</h3>
+
+<p>
+Experience dune landscapes, camel rides, sunset views and
+Bedouin-inspired camps.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🚤 Water Activities</h3>
+
+<p>
+Enjoy kayaking, cruises, speedboats, beaches and other
+water-based experiences.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🐪 Camel Experiences</h3>
+
+<p>
+Connect with traditional desert culture through camel-related
+experiences and heritage activities.
+</p>
+
+</div>
+
+<div class="experience">
+
+<h3>🌿 Nature Exploration</h3>
+
+<p>
+Discover mangroves, beaches, wadis, mountains and desert
+ecosystems.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= TRANSPORT ================= -->
+
+<section class="transport" id="transport">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Getting Around RAK</h2>
+
+<p>
+Choose the transport option that fits your journey.
+</p>
+
+</div>
+
+<div class="transport-grid">
+
+<div class="transport-card">
+
+<div class="icon">🚌</div>
+
+<h3>City Buses</h3>
+
+<p>
+Affordable city buses connect important areas and attractions.
+</p>
+
+</div>
+
+<div class="transport-card">
+
+<div class="icon">🚕</div>
+
+<h3>Taxi</h3>
+
+<p>
+24-hour taxi services are available throughout the emirate.
+</p>
+
+</div>
+
+<div class="transport-card">
+
+<div class="icon">🚐</div>
+
+<h3>Sharing Taxi</h3>
+
+<p>
+A more economical option for selected routes.
+</p>
+
+</div>
+
+<div class="transport-card">
+
+<div class="icon">🚲</div>
+
+<h3>E-Mobility</h3>
+
+<p>
+E-scooters and e-bikes are available in selected areas.
+</p>
+
+</div>
+
+<div class="transport-card">
+
+<div class="icon">🚤</div>
+
+<h3>Marine Transport</h3>
+
+<p>
+Explore selected coastal areas and attractions by water.
+</p>
+
+</div>
+
+<div class="transport-card">
+
+<div class="icon">🚗</div>
+
+<h3>Rental Cars</h3>
+
+<p>
+A convenient choice for mountain, desert and multi-stop trips.
+</p>
+
+</div>
+
+<div class="transport-card">
+
+<div class="icon">✈️</div>
+
+<h3>RAK Airport</h3>
+
+<p>
+Ras Al Khaimah International Airport provides regional access.
+</p>
+
+</div>
+
+<div class="transport-card">
+
+<div class="icon">🗺️</div>
+
+<h3>Smart Planning</h3>
+
+<p>
+Use the interactive map to plan routes between attractions.
+</p>
+
+</div>
+
+</div>
+
+<br>
+
+<div style="text-align:center">
+
+<a
+class="btn"
+href="https://www.rakta.gov.ae/public-transport/"
+target="_blank">
+
+View RAK Transport Information
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= ACCOMMODATION ================= -->
+
+<section id="stay">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Where Can You Stay?</h2>
+
+<p>
+From luxury resorts to budget-friendly accommodation and
+desert camps.
+</p>
+
+</div>
+
+<div class="accommodation">
+
+<div class="hotel">
+
+<h3>🌟 Luxury Resorts</h3>
+
+<p>
+World-class beach and island resorts with spas, restaurants,
+private beaches and premium experiences.
+</p>
+
+<ul>
+<li><strong>Waldorf Astoria Ras Al Khaimah</strong></li>
+<li><strong>The Ritz-Carlton Ras Al Khaimah, Al Wadi Desert</strong></li>
+<li><strong>InterContinental Ras Al Khaimah Mina Al Arab Resort & Spa</strong></li>
+</ul>
+
+</div>
+
+<div class="hotel">
+
+<h3>🏨 City Hotels</h3>
+
+<p>
+Convenient accommodation close to shopping, restaurants,
+transport and central RAK.
+</p>
+
+<ul>
+<li><strong>Citymax Hotel Ras Al Khaimah</strong></li>
+<li><strong>DoubleTree by Hilton Ras Al Khaimah</strong></li>
+<li><strong>Action Hotel Ras Al Khaimah</strong></li>
+</ul>
+
+</div>
+
+<div class="hotel">
+
+<h3>🏝️ Beach Resorts</h3>
+
+<p>
+Stay near Al Marjan Island, Al Hamra, or beachfront locations.
+</p>
+
+<ul>
+<li><strong>Rixos Bab Al Bahr</strong></li>
+<li><strong>Mövenpick Resort Al Marjan Island</strong></li>
+<li><strong>BM Beach Resort</strong></li>
+</ul>
+
+</div>
+
+<div class="hotel">
+
+<h3>🏜️ Desert & Mountain Camps</h3>
+
+<p>
+Unique stays amidst dunes, mountains, and nature.
+</p>
+
+<ul>
+<li><strong>Bedouin Oasis Camp</strong></li>
+<li><strong>Bassata Desert Village</strong></li>
+<li><strong>Jebel Jais Camping Grounds</strong></li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= ITINERARY ================= -->
+
+<section class="itinerary" id="itinerary">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Suggested 3-Day Itinerary</h2>
+
+<p>
+Make the most of your time in Ras Al Khaimah with this classic route.
+</p>
+
+</div>
+
+<div class="timeline">
+
+<div class="day">
+
+<h3>Day 1: Culture & Coastline</h3>
+
+<p>
+Explore the National Museum of Ras Al Khaimah, stroll through the historical Kuwaiti Souq, and visit the heritage village of Al Jazirah Al Hamra. End your day relaxing on Flamingo Beach or walking along Al Qawasim Corniche.
+</p>
+
+</div>
+
+<div class="day">
+
+<h3>Day 2: Mountain Peaks & Adventure</h3>
+
+<p>
+Head up Jebel Jais for panoramic mountain views, try the world-famous Jais Flight zipline or the Jais Sledder, and enjoy lunch at 1484 by Puro—the UAE's highest restaurant.
+</p>
+
+</div>
+
+<div class="day">
+
+<h3>Day 3: Desert & Island Sunset</h3>
+
+<p>
+Experience a morning desert safari or camel ride in the terracotta dunes, then head down to Al Marjan Island for a waterfront afternoon, beach activities, and sunset dining.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= BUDGET ================= -->
+
+<section id="budget">
+
+<div class="container">
+
+<div class="section-title">
+
+<h2>Traveler Budget Guide</h2>
+
+<p>
+Estimated daily expenses depending on your style of travel.
+</p>
+
+</div>
+
+<div class="budget">
+
+<div class="budget-card">
+
+<h3>Budget Explorer</h3>
+
+<div class="price">AED 200–350</div>
+
+<p>Per day</p>
+
+<br>
+
+<p>Includes public transit, local street food & traditional souqs, free public beaches, and self-guided heritage walks.</p>
+
+</div>
+
+<div class="budget-card">
+
+<h3>Mid-Range Traveler</h3>
+
+<div class="price">AED 600–1,100</div>
+
+<p>Per day</p>
+
+<br>
+
+<p>Includes city/mid-range hotels, rental cars or taxis, casual dining restaurants, and popular entry-level attractions.</p>
+
+</div>
+
+<div class="budget-card">
+
+<h3>Luxury Seeker</h3>
+
+<div class="price">AED 1,800+</div>
+
+<p>Per day</p>
+
+<br>
+
+<p>Includes 5-star beachfront or desert resorts, fine dining, private desert safaris, and premium experiences like Jais Flight.</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= CALL TO ACTION ================= -->
+
+<section class="cta">
+
+<div class="container">
+
+<h2>Ready to Experience Ras Al Khaimah?</h2>
+
+<p>Plan your journey to the UAE's nature and adventure capital today.</p>
+
+<br>
+
+<a href="#map-section" class="btn">Start Your Map Journey</a>
+
+</div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<div class="container">
+
+<div class="footer-grid">
+
+<div>
+
+<h3>RAK Explore</h3>
+
+<p>
+An official destination overview designed to showcase the beauty, culture, history, and adventure options available across Ras Al Khaimah.
+</p>
+
+</div>
+
+<div>
+
+<h3>Quick Links</h3>
+
+<a href="#home">Home</a>
+
+<a href="#gallery">Gallery</a>
+
+<a href="#marketing">Best Destination</a>
+
+<a href="#map-section">Map</a>
+
+<a href="#places">Explore</a>
+
+</div>
+
+<div>
+
+<h3>Discover</h3>
+
+<a href="#culture">Culture</a>
+
+<a href="#local-food">Local Foods</a>
+
+<a href="#adventure">Adventure</a>
+
+<a href="#stay">Stay</a>
+
+<a href="#transport">Getting Around</a>
+
+</div>
+
+<div>
+
+<h3>Official Resources</h3>
+
+<a href="https://visitrasalkhaimah.com/" target="_blank">Visit RAK (Official)</a>
+
+<a href="https://www.rakta.gov.ae/" target="_blank">RAK Transport Authority</a>
+
+<a href="https://visitjebeljais.com/" target="_blank">Jebel Jais Official</a>
+
+</div>
+
+</div>
+
+<div class="copyright">
+
+<p>&copy; 2026 RAK Explore. Built for Royal Roads University Destination Guide Project.</p>
+
+</div>
+
+</div>
+
+</footer>
+
+<!-- Leaflet Map JS Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+
+<script>
+// Initialize Map centered on Ras Al Khaimah
+var map = L.map('map').setView([25.791, 55.943], 11);
+
+// ESRI Free Public Tiles (No API Key Required & No Watermarks)
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom'
+}).addTo(map);
+
+// Define attraction coordinates
+var attractions = [
+    { name: "Al Jazirah Al Hamra", lat: 25.699, lng: 55.790 },
+    { name: "National Museum of Ras Al Khaimah", lat: 25.791, lng: 55.943 },
+    { name: "Al Marjan Island", lat: 25.670, lng: 55.740 },
+    { name: "Kuwaiti Souq", lat: 25.797, lng: 55.950 },
+    { name: "Flamingo Beach", lat: 25.766, lng: 55.905 },
+    { name: "Jebel Jais", lat: 25.952, lng: 56.183 },
+    { name: "Khor RAK Mangroves", lat: 25.815, lng: 55.949 },
+    { name: "Eysheat Awal Restaurant", lat: 25.790, lng: 55.943 },
+    { name: "Manar Mall", lat: 25.794, lng: 55.949 },
+    { name: "Al Qawasim Corniche", lat: 25.792, lng: 55.945 },
+    { name: "Wynn Al Marjan Island", lat: 25.700, lng: 55.730 }
+];
+
+var markers = {};
+
+// Add markers to map
+attractions.forEach(function(item) {
+    var marker = L.marker([item.lat, item.lng]).addTo(map);
+    marker.bindPopup("<b>" + item.name + "</b>");
+    markers[item.name] = marker;
+});
+
+// Function to handle clicking '📍 Map' buttons
+function showPlace(name, lat, lng) {
+    map.setView([lat, lng], 14);
+    if(markers[name]){
+        markers[name].openPopup();
+    }
+    document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Function to filter attraction cards
+function filterCards(category) {
+    var cards = document.querySelectorAll('#attractionCards .card');
+    var buttons = document.querySelectorAll('.filter-btn');
+    
+    buttons.forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+    
+    event.target.classList.add('active');
+
+    cards.forEach(function(card) {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+
+</body>
+</html>
